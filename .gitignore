@@ -3,3 +3,6 @@
 *.bak
 *.vscode
 *.bmp
+
+.pytest_cache/*
+__pycache__/*
