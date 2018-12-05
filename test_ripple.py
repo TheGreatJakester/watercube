@@ -22,5 +22,20 @@ class Test_TestRippleRegion(unittest.TestCase):
         ripple = make_ripples.ripple((-2,2))
         self.assertEqual(ripple.region(-1,1,-1,1),4)
 
+class Test_TestRippleReflect(unittest.TestCase):
+    def test_helper(self):
+        self.assertEqual(make_ripples.ripple.reflect_helper(0,-1),-2)
+    def test_reflect_x(self):
+        ripple = make_ripples.ripple((0,0))
+        compare_ripple = make_ripples.ripple((-2,0))
+        test_ripple = ripple.reflect_x(-1)
+        self.assertEqual(test_ripple,compare_ripple)
+
+    def test_reflect_y(self):
+        ripple = make_ripples.ripple((0,0))
+        compare_ripple = make_ripples.ripple((0,-2))
+        test_ripple = ripple.reflect_y(-1)
+        self.assertEqual(test_ripple,compare_ripple)
+
 if __name__ == '__main__':
     unittest.main()
