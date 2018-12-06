@@ -1,7 +1,7 @@
 ripple_template = "ripple(dist(x,z,{},{}),.08,10,4+clock*wave_speed,2)"
-class ripple:
-    def __init__(self,position):
-        self.position = position
+class Ripple:
+    def __init__(self,p):
+        self.position = p
 
     def __eq__(self,other):
         return self.position[0] == other.position[0] and self.position[1] == self.position[1]
@@ -34,22 +34,18 @@ class ripple:
                 return 8   
     #returns all the ripples that would take effect when the ripples bounce off walls
     #as defined by the corners.
-    @staticmethod
-    def reflect_helper (a,z):
+    def reflect_helper (self,a,z):
         return 2*z - a
 
     def reflect_x(self,x):
-        return ripple((
-            self.reflect_helper(self.position[0],x),
-            self.position[1]
-        ))
+        position = (self.reflect_helper(self.position[0],x),self.position[1])
+        return Ripple(position)
 
     def reflect_y(self,y):
-        return ripple((
+        return Ripple((
             self.position[0],
             self.reflect_helper(self.position[1],y)
         ))
-
 
     def reflect(self,x1,x2,y1,y2):
         reflected_ripples = []
@@ -89,3 +85,29 @@ class ripple:
             reflected_ripples.append(self.reflect_y(y1))
 
         return reflected_ripples
+
+
+depth = 10
+
+ripples = []
+to_do_ripples = []
+first_ripple = Ripple((-1,-1))
+to_do_ripples.append(first_ripple)
+
+for i in range(depth):
+    doing = []
+    doing.extend(to_do_ripples)
+    ripples.extend(to_do_ripples)
+    to_do_ripples.clear()
+    for Ripple in doing:
+        to_do_ripples.extend(Ripple.reflect(-4,4,-4,4))
+
+
+
+buffer = ""
+for ripple in ripples:
+    buffer += ripple.to_string() + "\n\t\t"
+
+ripple_file = open("ripples.inc","w")
+ripple_file.write(buffer)
+ripple_file.close()
