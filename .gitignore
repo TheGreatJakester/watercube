@@ -6,3 +6,8 @@
 
 .pytest_cache/*
 __pycache__/*
+/output
+/old_output
+*.mp3
+*.mkv
+
